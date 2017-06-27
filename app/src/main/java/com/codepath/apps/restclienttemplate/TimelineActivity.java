@@ -73,18 +73,43 @@ public class TimelineActivity extends AppCompatActivity {
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
 
-        populateTimeline();
+        fetchTimelineAsync();
     }
 
-    public void fetchTimelineAsync() {
-        // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-        // getHomeTimeline is an example endpoint.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_timeline, menu);
+        return true;
+    }
 
+    public void onComposeAction(MenuItem mi) {
+        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+        startActivityForResult(i, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            // Extract name value from result extras
+            Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("tweet"));
+            tweets.add(0, tweet);
+            tweetAdapter.notifyItemInserted(0);
+            rvTweets.scrollToPosition(0);
+        }
+    }
+
+    private void fetchTimelineAsync() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("TwitterClient", response.toString());
+            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                // Log.d("TwitterClient", response.toString());
                 // Remember to CLEAR OUT old items before appending in the new ones
                 tweetAdapter.clear();
                 // ...the data has come back, add new items to your adapter...
@@ -113,31 +138,6 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_timeline, menu);
-        return true;
-    }
-
-    public void onComposeAction(MenuItem mi) {
-        Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-        startActivityForResult(i, REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            // Extract name value from result extras
-            Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra("tweet"));
-            tweets.add(0, tweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
-        }
-    }
-
     private List<Tweet> processJSONArrayTweets(JSONArray response) {
         ArrayList<Tweet> newTweets = new ArrayList<>();
         // iterate through JSONArray
@@ -154,38 +154,5 @@ public class TimelineActivity extends AppCompatActivity {
             }
         }
         return newTweets;
-    }
-
-    private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("TwitterClient", response.toString());
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                // Log.d("TwitterClient", response.toString());
-                tweetAdapter.addAll(processJSONArrayTweets(response));
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-        });
     }
 }
