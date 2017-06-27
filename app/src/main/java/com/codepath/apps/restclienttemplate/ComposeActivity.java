@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -16,6 +17,7 @@ import org.parceler.Parcels;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import cz.msebera.android.httpclient.Header;
 
 public class ComposeActivity extends AppCompatActivity {
@@ -23,6 +25,8 @@ public class ComposeActivity extends AppCompatActivity {
     private TwitterClient client;
 
     @BindView(R.id.etStatus) EditText etStatus;
+    @BindView(R.id.tvCharCount)
+    TextView tvCharCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,18 @@ public class ComposeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_compose);
 
         client = TwitterApplication.getRestClient();
-
         // bind views
         ButterKnife.bind(this);
+
+        tvCharCount.setText("140");
+    }
+
+    @OnTextChanged(value = R.id.etStatus,
+            callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void charCountUpdate() {
+        String status = etStatus.getText().toString();
+        Integer statusLength = status.length();
+        tvCharCount.setText(Integer.toString(140 - statusLength));
     }
 
     @OnClick(R.id.btnTweet)
