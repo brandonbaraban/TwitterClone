@@ -54,6 +54,14 @@ public class Tweet {
             e.printStackTrace();
         }
 
+        if (relativeDate.contains("seconds")) {
+            relativeDate = relativeDate.substring(0, 1) + "s";
+        } else if (relativeDate.contains("minutes")) {
+            relativeDate = relativeDate.substring(0, 1) + "m";
+        } else if (relativeDate.contains("hour")) {
+            relativeDate = relativeDate.substring(0, 1) + "h";
+        }
+
         relativeTimestamp = relativeDate;
     }
 }
