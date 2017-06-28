@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -75,9 +76,14 @@ public class TimelineActivity extends AppCompatActivity {
         // construct the adapter from this data source
         tweetAdapter = new TweetAdapter(tweets);
         // RecyclerView setup (layout manager, use adapter)
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(layoutManager);
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvTweets.getContext(),
+                layoutManager.getOrientation());
+        rvTweets.addItemDecoration(dividerItemDecoration);
 
         fetchTimelineAsync();
     }
