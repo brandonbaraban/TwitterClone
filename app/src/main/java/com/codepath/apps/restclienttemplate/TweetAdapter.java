@@ -20,14 +20,16 @@ import butterknife.ButterKnife;
  * Created by bbaraban on 6/26/17.
  */
 
-public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
+public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
     private List<Tweet> mTweets;
     Context context;
+
     // pass in the Tweets array in the constructor
     public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
     }
+
     // for each row, inflate the layout and cache references into ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,6 +40,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         ViewHolder viewHolder = new ViewHolder(tweetView);
         return viewHolder;
     }
+
     // bind the values based on the position of the element
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -62,11 +65,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     // create ViewHolder class
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
-        @BindView(R.id.tvUsername) TextView tvUsername;
-        @BindView(R.id.tvScreenName) TextView tvScreenName;
-        @BindView(R.id.tvTimestamp) TextView tvTimestamp;
-        @BindView(R.id.tvBody) TextView tvBody;
+        @BindView(R.id.ivProfileImage)
+        ImageView ivProfileImage;
+        @BindView(R.id.tvUsername)
+        TextView tvUsername;
+        @BindView(R.id.tvScreenName)
+        TextView tvScreenName;
+        @BindView(R.id.tvTimestamp)
+        TextView tvTimestamp;
+        @BindView(R.id.tvBody)
+        TextView tvBody;
 
         public ViewHolder(View itemView) {
             super(itemView);

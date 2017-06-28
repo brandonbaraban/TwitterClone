@@ -45,7 +45,7 @@ public class ComposeActivity extends AppCompatActivity {
     public void charCountUpdate() {
         String status = etStatus.getText().toString();
         Integer statusLength = status.length();
-        tvCharCount.setText(Integer.toString(140 - statusLength));
+        tvCharCount.setText(String.valueOf(140 - statusLength));
     }
 
     @OnClick(R.id.btnTweet)

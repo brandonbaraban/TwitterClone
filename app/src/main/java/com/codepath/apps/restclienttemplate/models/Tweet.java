@@ -24,7 +24,8 @@ public class Tweet {
     public String createdAt;
     public String relativeTimestamp;
 
-    public Tweet() {};
+    public Tweet() {
+    }
 
     // deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
