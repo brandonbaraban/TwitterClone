@@ -57,9 +57,11 @@ public class Tweet {
 
         if (relativeDate.contains("seconds")) {
             relativeDate = relativeDate.substring(0, 1) + "s";
+        } else if (relativeDate.contains("minute")) {
+            relativeDate = relativeDate.substring(0, 1) + "m";
         } else if (relativeDate.contains("minutes")) {
             relativeDate = relativeDate.substring(0, 1) + "m";
-        } else if (relativeDate.contains("hour")) {
+        }else if (relativeDate.contains("hour")) {
             relativeDate = relativeDate.substring(0, 1) + "h";
         }
 

@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -22,7 +21,6 @@ import org.parceler.Parcels;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import cz.msebera.android.httpclient.Header;
 
 public class ComposeActivity extends AppCompatActivity {
@@ -32,8 +30,6 @@ public class ComposeActivity extends AppCompatActivity {
     private MenuItem miActionProgress;
 
     @BindView(R.id.etStatus) EditText etStatus;
-    @BindView(R.id.tvCharCount)
-    TextView tvCharCount;
     @BindView(R.id.tbMenuCompose)
     Toolbar tbMenuCompose;
 
@@ -48,7 +44,6 @@ public class ComposeActivity extends AppCompatActivity {
 
         setSupportActionBar(tbMenuCompose);
         getSupportActionBar().setTitle("Compose tweet");
-        tvCharCount.setText("140");
     }
 
     @Override
@@ -76,14 +71,6 @@ public class ComposeActivity extends AppCompatActivity {
     public void hideProgressBar() {
         // Hide progress item
         miActionProgress.setVisible(false);
-    }
-
-    @OnTextChanged(value = R.id.etStatus,
-            callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void charCountUpdate() {
-        String status = etStatus.getText().toString();
-        Integer statusLength = status.length();
-        tvCharCount.setText(String.valueOf(140 - statusLength));
     }
 
     @OnClick(R.id.btnTweet)
