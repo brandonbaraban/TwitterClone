@@ -43,7 +43,7 @@ public class ComposeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(tbMenuCompose);
-        getSupportActionBar().setTitle("Compose tweet");
+        tbMenuCompose.setTitle("Compose tweet");
     }
 
     @Override
