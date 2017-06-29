@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,8 @@ public class ComposeActivity extends AppCompatActivity {
 
     private TwitterClient client;
 
+    private Tweet mTweet;
+
     private MenuItem miActionProgress;
 
     @BindView(R.id.etStatus) EditText etStatus;
@@ -38,12 +41,21 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
+        mTweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
+
         client = TwitterApplication.getRestClient();
         // bind views
         ButterKnife.bind(this);
 
         setSupportActionBar(tbMenuCompose);
-        tbMenuCompose.setTitle("Compose tweet");
+        if (mTweet != null) {
+            String reply = "@" + mTweet.user.screenName + " ";
+            etStatus.setText(reply);
+            etStatus.setSelection(reply.length());
+            tbMenuCompose.setTitle("Reply to " + mTweet.user.name);
+        } else {
+            tbMenuCompose.setTitle("Compose tweet");
+        }
     }
 
     @Override
@@ -78,7 +90,12 @@ public class ComposeActivity extends AppCompatActivity {
         if (miActionProgress != null) {
             showProgressBar();
         }
-        client.sendTweet(etStatus.getText().toString(), new JsonHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.put("status", etStatus.getText().toString());
+        if (mTweet != null) {
+            params.put("in_reply_to_status_id", mTweet.uid);
+        }
+        client.sendTweet(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {

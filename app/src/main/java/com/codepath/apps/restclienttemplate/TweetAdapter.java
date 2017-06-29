@@ -1,15 +1,20 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -21,6 +26,8 @@ import butterknife.ButterKnife;
  */
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
+
+    private final int REQUEST_CODE = 20;
 
     private List<Tweet> mTweets;
     Context context;
@@ -52,12 +59,23 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvScreenName.setText(screenName);
         holder.tvTimestamp.setText(tweet.relativeTimestamp);
         holder.tvBody.setText(tweet.body);
+        holder.ibtnReply.setOnClickListener(onReply(tweet));
 
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
                 .into(holder.ivProfileImage);
     }
 
+    private View.OnClickListener onReply(final Tweet tweet) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, ComposeActivity.class);
+                i.putExtra("tweet", Parcels.wrap(tweet));
+                ((AppCompatActivity) context).startActivityForResult(i, REQUEST_CODE);
+            }
+        };
+    }
     @Override
     public int getItemCount() {
         return mTweets.size();
@@ -75,6 +93,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         TextView tvTimestamp;
         @BindView(R.id.tvBody)
         TextView tvBody;
+        @BindView(R.id.ibtnReply)
+        ImageButton ibtnReply;
 
         public ViewHolder(View itemView) {
             super(itemView);
