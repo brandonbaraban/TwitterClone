@@ -64,6 +64,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
                 .into(holder.ivProfileImage);
+
+        holder.itemView.setOnClickListener(onDetails(tweet, position));
     }
 
     private View.OnClickListener onReply(final Tweet tweet) {
@@ -71,11 +73,26 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ComposeActivity.class);
-                i.putExtra("tweet", Parcels.wrap(tweet));
+                i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                 ((AppCompatActivity) context).startActivityForResult(i, REQUEST_CODE);
             }
         };
     }
+
+    private View.OnClickListener onDetails(final Tweet tweet, final int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // make sure the position is valid, i.e. actually exists in the view
+                if (position != RecyclerView.NO_POSITION) {
+                    Intent intent = new Intent(context, TweetDetailsActivity.class);
+                    intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                    context.startActivity(intent);
+                }
+            }
+        };
+    }
+
     @Override
     public int getItemCount() {
         return mTweets.size();
@@ -83,6 +100,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     // create ViewHolder class
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
         @BindView(R.id.tvUsername)

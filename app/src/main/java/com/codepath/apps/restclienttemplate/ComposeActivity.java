@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,20 +42,25 @@ public class ComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
 
-        mTweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
+        mTweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
 
         client = TwitterApplication.getRestClient();
         // bind views
         ButterKnife.bind(this);
 
         setSupportActionBar(tbMenuCompose);
+        ActionBar ab = getSupportActionBar();
         if (mTweet != null) {
             String reply = "@" + mTweet.user.screenName + " ";
             etStatus.setText(reply);
             etStatus.setSelection(reply.length());
-            tbMenuCompose.setTitle("Reply to " + mTweet.user.name);
+            if (ab != null) {
+                ab.setTitle("Reply to " + reply);
+            }
         } else {
-            tbMenuCompose.setTitle("Compose tweet");
+            if (ab != null) {
+                ab.setTitle("Compose tweet");
+            }
         }
     }
 
@@ -101,7 +107,7 @@ public class ComposeActivity extends AppCompatActivity {
                 try {
                     Tweet tweet = Tweet.fromJSON(response);
                     Intent i = new Intent();
-                    i.putExtra("tweet", Parcels.wrap(tweet));
+                    i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                     setResult(RESULT_OK, i);
                     if (miActionProgress != null) {
                         hideProgressBar();

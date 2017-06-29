@@ -23,6 +23,9 @@ public class Tweet {
     public User user;
     public String createdAt;
     public String relativeTimestamp;
+    public String dateTime;
+    public boolean retweeted = false;
+    public boolean favorited = false;
 
     public Tweet() {
     }
@@ -64,7 +67,7 @@ public class Tweet {
         }else if (relativeDate.contains("hour")) {
             relativeDate = relativeDate.substring(0, 1) + "h";
         }
-
+        dateTime = rawJsonDate.substring(11, 16) + " . " + rawJsonDate.substring(8, 10) + " " + rawJsonDate.substring(4, 7) + " " + rawJsonDate.substring(rawJsonDate.length() - 2, rawJsonDate.length());
         relativeTimestamp = relativeDate;
     }
 }
