@@ -116,7 +116,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.ibtnRetweet)
     public void onRetweet() {
         if (tweet.retweeted) {
-            client.unretweet(tweet.uid, new JsonHttpResponseHandler() {
+            client.unretweet(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     Toast.makeText(TweetDetailsActivity.this, "unretweet successful", Toast.LENGTH_SHORT).show();
@@ -140,7 +140,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 }
             });
         } else {
-            client.retweet(tweet.uid, new JsonHttpResponseHandler() {
+            client.retweet(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     Toast.makeText(TweetDetailsActivity.this, "retweet successful", Toast.LENGTH_SHORT).show();
@@ -169,7 +169,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.ibtnFavorite)
     public void onFavorite() {
         if (tweet.favorited) {
-            client.unfavorite(tweet.uid, new JsonHttpResponseHandler() {
+            client.unfavorite(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     Toast.makeText(TweetDetailsActivity.this, "unfavorite successful", Toast.LENGTH_SHORT).show();
@@ -193,7 +193,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 }
             });
         } else {
-            client.favorite(tweet.uid, new JsonHttpResponseHandler() {
+            client.favorite(tweet.id, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     Toast.makeText(TweetDetailsActivity.this, "favorite successful", Toast.LENGTH_SHORT).show();

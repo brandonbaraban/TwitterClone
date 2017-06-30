@@ -10,9 +10,9 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="colorPrimary">#ff0000</item>
-        <item name="colorPrimaryDark">#ffbcbc</item>
-        <item name="colorAccent">#000000</item>
+        <item name="colorPrimary">#ffffff</item>
+        <item name="colorPrimaryDark">#ffccd6dd</item>
+        <item name="colorAccent">#ff1da1f2</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

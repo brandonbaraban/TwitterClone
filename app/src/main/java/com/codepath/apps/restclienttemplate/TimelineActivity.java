@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,7 @@ import cz.msebera.android.httpclient.Header;
 public class TimelineActivity extends AppCompatActivity {
 
     private TwitterClient client;
+    private EndlessRecyclerViewScrollListener scrollListener;
     private final int REQUEST_CODE_COMPOSE = 20;
     private final int REQUEST_CODE_DETAILS = 10;
 
@@ -62,7 +65,7 @@ public class TimelineActivity extends AppCompatActivity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                fetchTimelineAsync();
+                fetchTimelineAsync(false);
             }
         });
         // Configure the refreshing colors
@@ -86,13 +89,18 @@ public class TimelineActivity extends AppCompatActivity {
                 layoutManager.getOrientation());
         rvTweets.addItemDecoration(dividerItemDecoration);
 
-        fetchTimelineAsync();
-    }
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                fetchTimelineAsync(true);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvTweets.addOnScrollListener(scrollListener);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // fetchTimelineAsync();
+        fetchTimelineAsync(false);
     }
 
     @Override
@@ -146,11 +154,16 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchTimelineAsync() {
+    private void fetchTimelineAsync(final boolean loadMore) {
         if (miActionProgress != null) {
             showProgressBar();
         }
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        if (loadMore) {
+            params.put("max_id", tweets.get(tweets.size() - 1).id - 1);
+        }
+        params.put("since_id", 1);
+        client.getHomeTimeline(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
@@ -160,9 +173,22 @@ public class TimelineActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 // Log.d("TwitterClient", response.toString());
                 // Remember to CLEAR OUT old items before appending in the new ones
-                tweetAdapter.clear();
+                if (!loadMore) {
+                    tweetAdapter.clear();
+                    for (Tweet tweet : tweets) {
+                        tweet.delete();
+                    }
+                }
                 // ...the data has come back, add new items to your adapter...
-                tweetAdapter.addAll(processJSONArrayTweets(response));
+                List<Tweet> list = processJSONArrayTweets(response);
+                tweetAdapter.addAll(list);
+
+                if(!loadMore) {
+                    for (Tweet tweet : list) {
+                        tweet.save();
+                    }
+                }
+
                 // Now we call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
                 if (miActionProgress != null) {
@@ -172,19 +198,49 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
+                // Log.d("TwitterClient", responseString);
+                if (!loadMore) {
+                    tweets.clear();
+                    tweetAdapter.addAll(SQLite.select().
+                            from(Tweet.class).
+                            queryList());
+                }
+                swipeContainer.setRefreshing(false);
+                if (miActionProgress != null) {
+                    hideProgressBar();
+                }
                 throwable.printStackTrace();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
+                // Log.d("TwitterClient", errorResponse.toString());
+                if (!loadMore) {
+                    tweets.clear();
+                    tweetAdapter.addAll(SQLite.select().
+                            from(Tweet.class).
+                            queryList());
+                }
+                swipeContainer.setRefreshing(false);
+                if (miActionProgress != null) {
+                    hideProgressBar();
+                }
                 throwable.printStackTrace();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
+                // Log.d("TwitterClient", errorResponse.toString());
+                if (!loadMore) {
+                    tweets.clear();
+                    tweetAdapter.addAll(SQLite.select().
+                            from(Tweet.class).
+                            queryList());
+                }
+                swipeContainer.setRefreshing(false);
+                if (miActionProgress != null) {
+                    hideProgressBar();
+                }
                 throwable.printStackTrace();
             }
         });

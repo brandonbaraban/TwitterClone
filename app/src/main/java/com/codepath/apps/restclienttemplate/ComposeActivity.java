@@ -99,7 +99,7 @@ public class ComposeActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("status", etStatus.getText().toString());
         if (mTweet != null) {
-            params.put("in_reply_to_status_id", mTweet.uid);
+            params.put("in_reply_to_status_id", mTweet.id);
         }
         client.sendTweet(params, new JsonHttpResponseHandler() {
             @Override

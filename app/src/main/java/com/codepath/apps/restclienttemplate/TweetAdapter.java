@@ -104,7 +104,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             public void onClick(View v) {
                 if (tweet.favorited) {
                     mTweets.get(position).favorited = false;
-                    client.unfavorite(tweet.uid, new JsonHttpResponseHandler() {
+                    client.unfavorite(tweet.id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             Toast.makeText(context, "unfavorite successful", Toast.LENGTH_SHORT).show();
@@ -128,7 +128,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     });
                 } else {
                     mTweets.get(position).favorited = true;
-                    client.favorite(tweet.uid, new JsonHttpResponseHandler() {
+                    client.favorite(tweet.id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             Toast.makeText(context, "favorite successful", Toast.LENGTH_SHORT).show();
@@ -161,7 +161,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             public void onClick(View v) {
                 if (tweet.retweeted) {
                     mTweets.get(position).retweeted = false;
-                    client.unretweet(tweet.uid, new JsonHttpResponseHandler() {
+                    client.unretweet(tweet.id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             Toast.makeText(context, "unretweet successful", Toast.LENGTH_SHORT).show();
@@ -185,7 +185,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     });
                 } else {
                     mTweets.get(position).retweeted = true;
-                    client.retweet(tweet.uid, new JsonHttpResponseHandler() {
+                    client.retweet(tweet.id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             Toast.makeText(context, "retweet successful", Toast.LENGTH_SHORT).show();

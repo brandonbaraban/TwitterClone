@@ -2,6 +2,13 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
 
+import com.codepath.apps.restclienttemplate.MyDatabase;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.ForeignKey;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,18 +22,36 @@ import java.util.Locale;
  * Created by bbaraban on 6/26/17.
  */
 
-@Parcel
-public class Tweet {
+@Table(database = MyDatabase.class)
+@Parcel(analyze={Tweet.class})
+public class Tweet extends BaseModel {
+
+    @Column
+    @PrimaryKey
+    public long id;
+
+    @Column
+    @ForeignKey(saveForeignKeyModel = true)
+    public User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     // list out the attributes
+    @Column
     public String body;
-    public long uid; // database ID for the tweet
-    public User user;
+    @Column
     public String createdAt;
+    @Column
     public String relativeTimestamp;
+    @Column
     public String dateTime;
+    @Column
     public boolean retweeted;
+    @Column
     public boolean favorited;
+    @Column
     public String mediaUrl;
 
     public Tweet() {
@@ -38,7 +63,7 @@ public class Tweet {
 
         // extract the values from JSON
         tweet.body = jsonObject.getString("text");
-        tweet.uid = jsonObject.getLong("id");
+        tweet.id = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.getRelativeTimeAgo(tweet.createdAt);
         tweet.retweeted = jsonObject.getBoolean("retweeted");
@@ -50,13 +75,81 @@ public class Tweet {
         try {
             media = entities.getJSONArray("media");
         } catch (JSONException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
         }
         if (media != null) {
             tweet.mediaUrl = media.getJSONObject(0).getString("media_url");
         }
 
         return tweet;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getRelativeTimestamp() {
+        return relativeTimestamp;
+    }
+
+    public void setRelativeTimestamp(String relativeTimestamp) {
+        this.relativeTimestamp = relativeTimestamp;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
+    public void setRetweeted(boolean retweeted) {
+        this.retweeted = retweeted;
+    }
+
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
+    public void setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
     }
 
     public void getRelativeTimeAgo(String rawJsonDate) {
