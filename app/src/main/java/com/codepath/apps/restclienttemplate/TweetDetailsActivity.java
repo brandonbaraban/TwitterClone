@@ -31,6 +31,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     private TwitterClient client;
 
     Tweet tweet;
+    int position;
 
     @BindView(R.id.tbMenuDetails)
     Toolbar tbMenuDetails;
@@ -59,7 +60,9 @@ public class TweetDetailsActivity extends AppCompatActivity {
             ab.setTitle("Tweet");
         }
 
-        tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
+        Intent i = getIntent();
+        tweet = Parcels.unwrap(i.getParcelableExtra(Tweet.class.getSimpleName()));
+        position = i.getIntExtra("position", -1);
         tvUsername.setText(tweet.user.name);
         String screenName = "@" + tweet.user.screenName;
         tvScreenName.setText(screenName);
@@ -72,12 +75,26 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
         if (tweet.retweeted) {
             ibtnRetweet.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_retweet));
+        } else {
+            ibtnRetweet.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_retweet_stroke));
         }
         if (tweet.favorited) {
             ibtnFavorite.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_heart));
+        } else {
+            ibtnFavorite.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_heart_stroke));
         }
 
         client = TwitterApplication.getRestClient();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+        intent.putExtra("position", position);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @OnClick(R.id.ibtnReply)

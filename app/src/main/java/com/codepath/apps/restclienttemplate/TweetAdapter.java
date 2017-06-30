@@ -33,7 +33,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
-    private final int REQUEST_CODE = 20;
+    private final int REQUEST_CODE_COMPOSE = 20;
+    private final int REQUEST_CODE_DETAILS = 10;
 
     TwitterClient client;
 
@@ -209,7 +210,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             public void onClick(View v) {
                 Intent i = new Intent(context, ComposeActivity.class);
                 i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                ((AppCompatActivity) context).startActivityForResult(i, REQUEST_CODE);
+                ((AppCompatActivity) context).startActivityForResult(i, REQUEST_CODE_COMPOSE);
             }
         };
     }
@@ -222,7 +223,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 if (position != RecyclerView.NO_POSITION) {
                     Intent intent = new Intent(context, TweetDetailsActivity.class);
                     intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                    context.startActivity(intent);
+                    intent.putExtra("position", position);
+                    ((AppCompatActivity) context).startActivityForResult(intent, REQUEST_CODE_DETAILS);
                 }
             }
         };

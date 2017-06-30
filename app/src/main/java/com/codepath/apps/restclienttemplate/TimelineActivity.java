@@ -32,7 +32,8 @@ import cz.msebera.android.httpclient.Header;
 public class TimelineActivity extends AppCompatActivity {
 
     private TwitterClient client;
-    private final int REQUEST_CODE = 20;
+    private final int REQUEST_CODE_COMPOSE = 20;
+    private final int REQUEST_CODE_DETAILS = 10;
 
     private MenuItem miActionProgress;
 
@@ -91,7 +92,7 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fetchTimelineAsync();
+        // fetchTimelineAsync();
     }
 
     @Override
@@ -123,18 +124,25 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void onComposeAction(MenuItem mi) {
         Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-        startActivityForResult(i, REQUEST_CODE);
+        startActivityForResult(i, REQUEST_CODE_COMPOSE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
             // Extract name value from result extras
             Tweet tweet = Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             tweets.add(0, tweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
+        } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
+            // Extract name value from result extras
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            int position = data.getIntExtra("position", -1);
+            tweets.remove(position);
+            tweets.add(position, tweet);
+            tweetAdapter.notifyItemChanged(position);
         }
     }
 
