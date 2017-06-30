@@ -13,8 +13,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import butterknife.BindView;
@@ -68,6 +70,13 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 .load(tweet.user.profileImageUrl)
                 .into(ivProfileImage);
 
+        if (tweet.retweeted) {
+            ibtnRetweet.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_retweet));
+        }
+        if (tweet.favorited) {
+            ibtnFavorite.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_heart));
+        }
+
         client = TwitterApplication.getRestClient();
     }
 
@@ -81,33 +90,51 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.ibtnRetweet)
     public void onRetweet() {
         if (tweet.retweeted) {
-            client.unretweet(tweet.uid, new AsyncHttpResponseHandler() {
+            client.unretweet(tweet.uid, new JsonHttpResponseHandler() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Toast.makeText(TweetDetailsActivity.this, "unRetweet successful", Toast.LENGTH_SHORT).show();
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Toast.makeText(TweetDetailsActivity.this, "unretweet successful", Toast.LENGTH_SHORT).show();
                     ibtnRetweet.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_retweet_stroke));
                     tweet.retweeted = false;
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(TweetDetailsActivity.this, "unRetweet unsuccessful", Toast.LENGTH_SHORT).show();
-                    error.printStackTrace();
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    throwable.printStackTrace();
                 }
             });
         } else {
-            client.retweet(tweet.uid, new AsyncHttpResponseHandler() {
+            client.retweet(tweet.uid, new JsonHttpResponseHandler() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Toast.makeText(TweetDetailsActivity.this, "Retweet successful", Toast.LENGTH_SHORT).show();
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Toast.makeText(TweetDetailsActivity.this, "retweet successful", Toast.LENGTH_SHORT).show();
                     ibtnRetweet.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_retweet));
                     tweet.retweeted = true;
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(TweetDetailsActivity.this, "Retweet unsuccessful", Toast.LENGTH_SHORT).show();
-                    error.printStackTrace();
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    throwable.printStackTrace();
                 }
             });
         }
@@ -116,33 +143,51 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @OnClick(R.id.ibtnFavorite)
     public void onFavorite() {
         if (tweet.favorited) {
-            client.unfavorite(tweet.uid, new AsyncHttpResponseHandler() {
+            client.unfavorite(tweet.uid, new JsonHttpResponseHandler() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Toast.makeText(TweetDetailsActivity.this, "unFavorite successful", Toast.LENGTH_SHORT).show();
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Toast.makeText(TweetDetailsActivity.this, "unfavorite successful", Toast.LENGTH_SHORT).show();
                     ibtnFavorite.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_heart_stroke));
                     tweet.favorited = false;
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(TweetDetailsActivity.this, "unFavorite unsuccessful", Toast.LENGTH_SHORT).show();
-                    error.printStackTrace();
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    throwable.printStackTrace();
                 }
             });
         } else {
-            client.favorite(tweet.uid, new AsyncHttpResponseHandler() {
+            client.favorite(tweet.uid, new JsonHttpResponseHandler() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Toast.makeText(TweetDetailsActivity.this, "Favorite successful", Toast.LENGTH_SHORT).show();
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Toast.makeText(TweetDetailsActivity.this, "favorite successful", Toast.LENGTH_SHORT).show();
                     ibtnFavorite.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_heart));
                     tweet.favorited = true;
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(TweetDetailsActivity.this, "Favorite unsuccessful", Toast.LENGTH_SHORT).show();
-                    error.printStackTrace();
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    throwable.printStackTrace();
                 }
             });
         }
