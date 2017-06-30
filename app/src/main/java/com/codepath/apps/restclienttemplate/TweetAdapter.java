@@ -87,6 +87,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .load(tweet.user.profileImageUrl)
                 .into(holder.ivProfileImage);
 
+        if (tweet.mediaUrl != null) {
+            Glide.with(context)
+                    .load(tweet.mediaUrl)
+                    .into(holder.ivMedia);
+        } else {
+            holder.ivMedia.setImageDrawable(null);
+        }
+
         holder.itemView.setOnClickListener(onDetails(tweet, position));
     }
 
@@ -254,6 +262,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         ImageButton ibtnRetweet;
         @BindView(R.id.ibtnFavorite)
         ImageButton ibtnFavorite;
+        @BindView(R.id.ivMedia) ImageView ivMedia;
 
         public ViewHolder(View itemView) {
             super(itemView);

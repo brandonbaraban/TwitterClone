@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
@@ -26,6 +27,7 @@ public class Tweet {
     public String dateTime;
     public boolean retweeted;
     public boolean favorited;
+    public String mediaUrl;
 
     public Tweet() {
     }
@@ -42,6 +44,17 @@ public class Tweet {
         tweet.retweeted = jsonObject.getBoolean("retweeted");
         tweet.favorited = jsonObject.getBoolean("favorited");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        JSONArray media = null;
+        try {
+            media = entities.getJSONArray("media");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (media != null) {
+            tweet.mediaUrl = media.getJSONObject(0).getString("media_url");
+        }
 
         return tweet;
     }

@@ -47,14 +47,22 @@
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="TextView" />
 
+    <ImageView
+        android:id="@+id/ivMedia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_alignStart="@+id/tvBody"
+        android:layout_below="@+id/tvBody"
+        android:adjustViewBounds="true" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvBody"
         android:padding="5dp"
         android:weightSum="3"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/tvBody">
+        android:layout_below="@+id/ivMedia"
+        android:layout_alignStart="@+id/ivMedia">
 
         <ImageButton
             android:id="@+id/ibtnReply"
@@ -81,4 +89,5 @@
             app:srcCompat="@drawable/ic_vector_heart_stroke" />
 
     </LinearLayout>
+
 </RelativeLayout>
