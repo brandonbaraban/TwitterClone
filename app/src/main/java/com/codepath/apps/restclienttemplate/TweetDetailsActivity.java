@@ -42,6 +42,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvScreenName) TextView tvScreenName;
     @BindView(R.id.tvBody) TextView tvBody;
     @BindView(R.id.tvDateTime) TextView tvDateTime;
+    @BindView(R.id.ivMedia) ImageView ivMedia;
     @BindView(R.id.ibtnReply)
     ImageButton ibtnReply;
     @BindView(R.id.ibtnRetweet) ImageButton ibtnRetweet;
@@ -72,6 +73,14 @@ public class TweetDetailsActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(tweet.user.profileImageUrl)
                 .into(ivProfileImage);
+
+        if (tweet.mediaUrl != null) {
+            Glide.with(this)
+                    .load(tweet.mediaUrl)
+                    .into(ivMedia);
+        } else {
+            ivMedia.setImageDrawable(null);
+        }
 
         if (tweet.retweeted) {
             ibtnRetweet.setImageDrawable(ContextCompat.getDrawable(TweetDetailsActivity.this, R.drawable.ic_vector_retweet));
