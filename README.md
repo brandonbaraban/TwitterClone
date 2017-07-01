@@ -49,6 +49,8 @@ Here's a walkthrough of implemented user stories:
 
 ![VideoWalkthrough](VideoWalkthrough.gif)
 
+Showing tweet persistance:
+
 ![VideoWalkthroughPersistance](VideoWalkthroughPersistance.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
