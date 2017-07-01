@@ -72,6 +72,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
         Glide.with(this)
                 .load(tweet.user.profileImageUrl)
+                .transform(new CircleTransform(this))
                 .into(ivProfileImage);
 
         if (tweet.mediaUrl != null) {

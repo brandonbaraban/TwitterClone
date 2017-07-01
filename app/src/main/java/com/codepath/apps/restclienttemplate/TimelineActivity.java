@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,6 +76,10 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
         // set the toolbar to act as the action bar for this activity
         setSupportActionBar(tbMenuTimeline);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setTitle("");
+        }
         // init the list (data source)
         tweets = new ArrayList<>();
         // construct the adapter from this data source
