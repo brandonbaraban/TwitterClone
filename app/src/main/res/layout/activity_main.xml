@@ -5,33 +5,33 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical">
 
-<android.support.v7.widget.Toolbar
-    android:id="@+id/tbMenuTimeline"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
-    android:minHeight="?attr/actionBarSize"
-    app:titleTextColor="@android:color/black">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbMenuTimeline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@android:color/black">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:src="@drawable/twitter_bird_blue"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/twitter_bird_blue"/>
 
-</android.support.v7.widget.Toolbar>
+    </android.support.v7.widget.Toolbar>
 
-<android.support.design.widget.TabLayout
-    android:id="@+id/sliding_tabs"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:tabMode="fixed" />
+    <android.support.design.widget.TabLayout
+        android:id="@+id/sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="fixed" />
 
-<android.support.v4.view.ViewPager
-    android:id="@+id/viewpager"
-    android:layout_width="match_parent"
-    android:layout_height="0px"
-    android:layout_weight="1"
-    android:background="@android:color/white" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white" />
 
 </LinearLayout>
