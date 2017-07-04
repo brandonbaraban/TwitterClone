@@ -166,7 +166,9 @@ public class Tweet extends BaseModel {
             e.printStackTrace();
         }
 
-        if (relativeDate.contains("seconds")) {
+        if (relativeDate.contains("second")) {
+            relativeDate = relativeDate.substring(0, 1) + "s";
+        } else if (relativeDate.contains("seconds")) {
             relativeDate = relativeDate.substring(0, 1) + "s";
         } else if (relativeDate.contains("minute")) {
             relativeDate = relativeDate.substring(0, 1) + "m";
