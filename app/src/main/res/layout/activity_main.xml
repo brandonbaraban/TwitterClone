@@ -27,11 +27,27 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         app:tabMode="fixed" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/white" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            app:fabSize="normal"
+            android:onClick="onComposeAction"
+            app:srcCompat="@drawable/vector_compose_fab" />
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

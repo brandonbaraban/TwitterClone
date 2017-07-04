@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements TweetsListFragmen
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void onComposeAction(MenuItem mi) {
+    public void onComposeAction(View v) {
         Intent i = new Intent(MainActivity.this, ComposeActivity.class);
         startActivityForResult(i, REQUEST_CODE_COMPOSE);
     }
