@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements TweetsListFragmen
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
             // Extract name value from result extras
             Tweet tweet = Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            vpPager.setCurrentItem(0, true);
             ((TweetsListFragment) tweetsPagerAdapter.getCurrentFragment()).returnFromCompose(tweet);
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
             // Extract name value from result extras

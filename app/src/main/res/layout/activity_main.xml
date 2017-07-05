@@ -46,7 +46,7 @@ android:orientation="vertical">
             android:layout_margin="16dp"
             app:fabSize="normal"
             android:onClick="onComposeAction"
-            app:srcCompat="@drawable/vector_compose_fab" />
+            app:srcCompat="@drawable/ic_vector_compose" />
 
     </android.support.design.widget.CoordinatorLayout>
 

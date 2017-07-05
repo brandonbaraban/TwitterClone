@@ -174,8 +174,12 @@ public class Tweet extends BaseModel {
             relativeDate = relativeDate.substring(0, 1) + "m";
         } else if (relativeDate.contains("minutes")) {
             relativeDate = relativeDate.substring(0, 1) + "m";
-        }else if (relativeDate.contains("hour")) {
+        } else if (relativeDate.contains("hour")) {
             relativeDate = relativeDate.substring(0, 1) + "h";
+        } else if (relativeDate.contains("day")) {
+            relativeDate = relativeDate.substring(0, 1) + "d";
+        } else if (relativeDate.contains("days")) {
+            relativeDate = relativeDate.substring(0, 1) + "d";
         }
         dateTime = rawJsonDate.substring(11, 16) + " . " + rawJsonDate.substring(8, 10) + " " + rawJsonDate.substring(4, 7) + " " + rawJsonDate.substring(rawJsonDate.length() - 2, rawJsonDate.length());
         relativeTimestamp = relativeDate;
