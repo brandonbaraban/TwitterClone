@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class TweetsListFragment extends Fragment {
 
-    private HomeTimelineListener listener;
+    private TimelineListener listener;
 
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
@@ -62,7 +62,7 @@ public class TweetsListFragment extends Fragment {
         return v;
     }
 
-    public interface HomeTimelineListener {
+    public interface TimelineListener {
         public void onRefresh(boolean b);
     }
 
@@ -70,8 +70,8 @@ public class TweetsListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof HomeTimelineListener) {
-            listener = (HomeTimelineListener) context;
+        if (context instanceof TimelineListener) {
+            listener = (TimelineListener) context;
         } else {
             throw new ClassCastException(context.toString()
                     + " must implement MyListFragment.OnItemSelectedListener");

@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -95,6 +97,12 @@ public class TweetDetailsActivity extends AppCompatActivity {
         }
 
         client = TwitterApplication.getRestClient();
+    }
+
+    public void onProfileView(View v) {
+        Intent i = new Intent(TweetDetailsActivity.this, UserProfileActivity.class);
+        i.putExtra(User.class.getSimpleName(), Parcels.wrap(tweet.user));
+        startActivity(i);
     }
 
     @Override

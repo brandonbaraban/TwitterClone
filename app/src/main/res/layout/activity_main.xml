@@ -14,10 +14,20 @@ android:orientation="vertical">
         app:titleTextColor="@android:color/black">
 
         <ImageView
+            android:id="@+id/ivUserProfileImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:src="@drawable/twitter_bird_blue"/>
+            android:onClick="onProfileView"
+            android:layout_gravity="start"
+            android:src="@drawable/twitter_bird_blue" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textStyle="bold" />
 
     </android.support.v7.widget.Toolbar>
 

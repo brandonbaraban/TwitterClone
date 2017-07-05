@@ -32,6 +32,12 @@ public class User {
     public String screenName;
     @Column
     public String profileImageUrl;
+    @Column
+    public String description;
+    @Column
+    public String followers;
+    @Column
+    public String following;
 
     public static User fromJSON(JSONObject jsonObject) throws JSONException {
         User user = new User();
@@ -41,6 +47,9 @@ public class User {
         user.id = jsonObject.getLong("id");
         user.screenName = jsonObject.getString("screen_name");
         user.profileImageUrl = jsonObject.getString("profile_image_url");
+        user.description = jsonObject.getString("description");
+        user.followers = jsonObject.getString("followers_count");
+        user.following = jsonObject.getString("friends_count");
 
         return user;
     }
@@ -59,6 +68,30 @@ public class User {
 
     public String getScreenName() {
         return screenName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(String followers) {
+        this.followers = followers;
+    }
+
+    public String getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(String following) {
+        this.following = following;
     }
 
     public void setScreenName(String screenName) {

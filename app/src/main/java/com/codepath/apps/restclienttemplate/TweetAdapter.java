@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -79,6 +80,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         } else {
             holder.ibtnFavorite.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_vector_heart_stroke));
         }
+        holder.ivProfileImage.setOnClickListener(onProfileView(tweet));
         holder.ibtnReply.setOnClickListener(onReply(tweet));
         holder.ibtnRetweet.setOnClickListener(onRetweet(holder, tweet, position));
         holder.ibtnFavorite.setOnClickListener(onFavorite(holder, tweet, position));
@@ -97,6 +99,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         }
 
         holder.itemView.setOnClickListener(onDetails(tweet, position));
+    }
+
+    private View.OnClickListener onProfileView(final Tweet tweet) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, UserProfileActivity.class);
+                i.putExtra(User.class.getSimpleName(), Parcels.wrap(tweet.user));
+                context.startActivity(i);
+            }
+        };
     }
 
     private View.OnClickListener onFavorite(final ViewHolder holder, final Tweet tweet, final int position) {
