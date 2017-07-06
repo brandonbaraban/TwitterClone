@@ -42,6 +42,8 @@
     <TextView
         android:id="@+id/tvBody"
         android:layout_width="wrap_content"
+        android:autoLink="all"
+        android:linksClickable="true"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:layout_alignStart="@+id/tvUsername"
