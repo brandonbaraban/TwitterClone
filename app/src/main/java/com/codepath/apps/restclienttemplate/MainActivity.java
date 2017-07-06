@@ -120,6 +120,11 @@ public class MainActivity extends AppCompatActivity implements TweetsListFragmen
         }
     }
 
+    @Override
+    public void setBannerUrl(String url) {
+
+    }
+
     public void onProfileView(View v) {
         Intent i = new Intent(MainActivity.this, UserProfileActivity.class);
         i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));

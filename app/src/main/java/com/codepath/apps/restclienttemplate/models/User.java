@@ -14,7 +14,7 @@ import org.parceler.Parcel;
  */
 
 @Table(database = MyDatabase.class)
-@Parcel(analyze={User.class})
+@Parcel(analyze = {User.class})
 public class User {
 
     @Column

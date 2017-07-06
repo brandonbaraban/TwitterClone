@@ -25,7 +25,10 @@ public class UserProfileActivity extends AppCompatActivity implements TweetsList
 
     User user;
     UserTimelineFragment userTimelineFragment;
+    String bannerUrl;
 
+    @BindView(R.id.ivUserBackgroundImage)
+    ImageView ivUserBackgroundImage;
     @BindView(R.id.ivUserProfileImage)
     ImageView ivUserProfileImage;
     @BindView(R.id.tvUsername)
@@ -54,6 +57,11 @@ public class UserProfileActivity extends AppCompatActivity implements TweetsList
 
         ButterKnife.bind(this);
 
+        if (bannerUrl != null) {
+            Glide.with(this)
+                    .load(bannerUrl)
+                    .into(ivUserBackgroundImage);
+        }
         Glide.with(this)
                 .load(user.profileImageUrl)
                 .transform(new CircleTransform(this))
@@ -61,7 +69,7 @@ public class UserProfileActivity extends AppCompatActivity implements TweetsList
         tvUsername.setText(user.name);
         String text = "@" + user.screenName;
         tvScreenName.setText(text);
-        if  (user.description == null || user.description.equals("")) {
+        if (user.description == null || user.description.equals("")) {
             tvBio.setText("[Empty description]");
         } else {
             tvBio.setText(user.description);
@@ -73,6 +81,16 @@ public class UserProfileActivity extends AppCompatActivity implements TweetsList
     @Override
     public void onRefresh(boolean b) {
 
+    }
+
+    @Override
+    public void setBannerUrl(String url) {
+        if (bannerUrl == null && url != null) {
+            bannerUrl = url;
+            Glide.with(this)
+                    .load(bannerUrl)
+                    .into(ivUserBackgroundImage);
+        }
     }
 
     @Override

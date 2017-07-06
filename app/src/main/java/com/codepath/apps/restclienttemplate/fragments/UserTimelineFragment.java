@@ -19,6 +19,7 @@ import com.loopj.android.http.RequestParams;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -116,6 +117,13 @@ public class UserTimelineFragment extends TweetsListFragment {
                 if(!loadMore) {
                     saveTweets();
                 }
+
+                try {
+                    listener.setBannerUrl(response.getJSONObject(0).getJSONObject("user").getString("profile_banner_url"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 // Now we call setRefreshing(false) to signal refresh has finished
                 hideProgressBar();
             }

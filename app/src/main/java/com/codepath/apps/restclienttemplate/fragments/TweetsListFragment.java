@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class TweetsListFragment extends Fragment {
 
-    private TimelineListener listener;
+    TimelineListener listener;
 
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
@@ -64,6 +64,7 @@ public class TweetsListFragment extends Fragment {
 
     public interface TimelineListener {
         public void onRefresh(boolean b);
+        public void setBannerUrl(String url);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
