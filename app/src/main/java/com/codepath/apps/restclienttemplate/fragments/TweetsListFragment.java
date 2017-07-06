@@ -142,4 +142,8 @@ public class TweetsListFragment extends Fragment {
         tweets.add(position, tweet);
         tweetAdapter.notifyItemChanged(position);
     }
+
+    public void scrollToTop() {
+        rvTweets.smoothScrollToPosition(0);
+    }
 }

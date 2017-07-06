@@ -160,4 +160,8 @@ public class MainActivity extends AppCompatActivity implements TweetsListFragmen
             }
         });
     }
+
+    public void scrollToTop(View view) {
+        ((TweetsListFragment) tweetsPagerAdapter.getCurrentFragment()).scrollToTop();
+    }
 }
