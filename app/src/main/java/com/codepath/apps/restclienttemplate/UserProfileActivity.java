@@ -114,4 +114,10 @@ public class UserProfileActivity extends AppCompatActivity implements TweetsList
         i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
         startActivity(i);
     }
+
+    public void onFollowers(View view) {
+        Intent i = new Intent(this, FollowersActivity.class);
+        i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+        startActivity(i);
+    }
 }
