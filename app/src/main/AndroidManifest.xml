@@ -36,9 +36,10 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".ComposeActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".TweetDetailsActivity"></activity>
-        <activity android:name=".UserProfileActivity"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".TweetDetailsActivity" />
+        <activity android:name=".UserProfileActivity" />
+        <activity android:name=".FollowingActivity"></activity>
     </application>
 
 </manifest>

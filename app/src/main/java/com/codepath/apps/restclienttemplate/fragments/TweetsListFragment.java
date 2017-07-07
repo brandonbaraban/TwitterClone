@@ -30,7 +30,7 @@ public class TweetsListFragment extends Fragment {
 
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
-    @BindView(R.id.rvTweet)
+    @BindView(R.id.rvTweets)
     RecyclerView rvTweets;
     @BindView(R.id.scRefresh)
     SwipeRefreshLayout swipeContainer;

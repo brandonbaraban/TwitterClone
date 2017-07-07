@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -106,5 +107,11 @@ public class UserProfileActivity extends AppCompatActivity implements TweetsList
             int position = data.getIntExtra("position", -1);
             userTimelineFragment.returnFromDetails(tweet, position);
         }
+    }
+
+    public void onFollowing(View view) {
+        Intent i = new Intent(this, FollowingActivity.class);
+        i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+        startActivity(i);
     }
 }

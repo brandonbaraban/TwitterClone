@@ -13,32 +13,40 @@ import android.view.ViewGroup;
 import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.TwitterClient;
-import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
 /**
- * Created by bbaraban on 7/3/17.
+ * Created by bbaraban on 7/6/17.
  */
 
-public class HomeTimelineFragment extends TweetsListFragment {
-
+public class FollowingFragment extends FollowFragment {
     EndlessRecyclerViewScrollListener scrollListener;
 
     TwitterClient client;
+    long mPage;
+    long lastPage;
+
+    public static FollowingFragment newInstance(String screenName){
+        FollowingFragment followFragment = new FollowingFragment();
+        Bundle args = new Bundle();
+        args.putString("screen_name", screenName);
+        followFragment.setArguments(args);
+        return followFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
 
-        fetchTimeline(false);
+        fetchFriends(0L);
     }
 
     @Override
@@ -52,7 +60,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                fetchTimeline(false);
+                fetchFriends(0L);
             }
         });
         // Configure the refreshing colors
@@ -61,16 +69,18 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager)rvTweets.getLayoutManager()) {
+        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager)rvUsers.getLayoutManager()) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                fetchTimeline(true);
+                if (lastPage != mPage) {
+                    fetchFriends(mPage);
+                }
             }
         };
         // Adds the scroll listener to RecyclerView
-        rvTweets.addOnScrollListener(scrollListener);
+        rvUsers.addOnScrollListener(scrollListener);
 
         return v;
     }
@@ -81,68 +91,50 @@ public class HomeTimelineFragment extends TweetsListFragment {
 //        super.onCreateOptionsMenu(menu, inflater);
 //    }
 
-    private void fetchTimeline(final boolean loadMore) {
+    private void fetchFriends(long page) {
         showProgressBar();
         RequestParams params = new RequestParams();
-        if (loadMore) {
-            params.put("max_id", getMaxId());
+        params.put("screen_name", getArguments().getString("screen_name"));
+        if (page != 0L) {
+            params.put("cursor", page);
         }
-        params.put("since_id", 1);
-        client.getHomeTimeline(params, new JsonHttpResponseHandler() {
+        client.getFriends(params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
+                try {
+                    processJSONArrayUsers(response.getJSONArray("users"));
+                    lastPage = mPage;
+                    mPage = response.getLong("next_cursor");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressBar();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                // Log.d("TwitterClient", response.toString());
-                // Remember to CLEAR OUT old items before appending in the new ones
-                if (!loadMore) {
-                    deleteTweets();
-                }
-                // ...the data has come back, add new items to your adapter...
-                processJSONArrayTweets(response);
-
-                if(!loadMore) {
-                    saveTweets();
-                }
-                // Now we call setRefreshing(false) to signal refresh has finished
+                Log.d("TwitterClient", response.toString());
                 hideProgressBar();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                // Log.d("TwitterClient", responseString);
-                if (!loadMore) {
-                    addTweets(SQLite.select().
-                            from(Tweet.class).
-                            queryList(), true);
-                }
+                Log.d("TwitterClient", responseString);
                 hideProgressBar();
                 throwable.printStackTrace();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                // Log.d("TwitterClient", errorResponse.toString());
-                if (!loadMore) {
-                    addTweets(SQLite.select().
-                            from(Tweet.class).
-                            queryList(), true);
-                }
+                Log.d("TwitterClient", errorResponse.toString());
                 hideProgressBar();
                 throwable.printStackTrace();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                // Log.d("TwitterClient", errorResponse.toString());
-                if (!loadMore) {
-                    addTweets(SQLite.select().
-                            from(Tweet.class).
-                            queryList(), true);
-                }
+                Log.d("TwitterClient", errorResponse.toString());
                 hideProgressBar();
                 throwable.printStackTrace();
             }

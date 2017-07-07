@@ -38,7 +38,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
 
-        fetchTimelineAsync(false);
+        fetchTimeline(false);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                fetchTimelineAsync(false);
+                fetchTimeline(false);
             }
         });
         // Configure the refreshing colors
@@ -66,7 +66,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                fetchTimelineAsync(true);
+                fetchTimeline(true);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -75,7 +75,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         return v;
     }
 
-    private void fetchTimelineAsync(final boolean loadMore) {
+    private void fetchTimeline(final boolean loadMore) {
         showProgressBar();
         RequestParams params = new RequestParams();
         if (loadMore) {
